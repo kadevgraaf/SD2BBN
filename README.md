@@ -8,23 +8,19 @@ The failure dependencies between certain sequences of interactions, especially i
 
 SD2BBN is written in Javascript.
 
-The most important libraries used are jsbayes.js and jsbayes-viz.js, made by Jee Vang ([https://github.com/vangj]).
-
-jsbayes-viz.js
-
-jsbayes.js
+The most important libraries used are (jsbayes.js)[https://github.com/vangj/jsbayes] and (jsbayes-viz.js)[https://github.com/vangj/jsbayes-viz], made by [Jee Vang](https://github.com/vangj).
 
 Other libraries include:
 
-d3.js
+(d3.js)[https://github.com/d3/d3]
 
-lodash.js
+(lodash.js)[https://github.com/lodash/lodash]
 
-graphlib.core.js
+(graphlib.js)[https://github.com/cpettitt/graphlib]
 
-dagre.js
+(dagre.js)[https://github.com/cpettitt/dagre]
 
-jquery.min.js
+(jquery.min.js)[https://github.com/jquery/jquery]
 
 
 ## Input ##
