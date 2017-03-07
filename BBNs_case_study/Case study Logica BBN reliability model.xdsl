@@ -1,0 +1,1514 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- This network was created in GeNIe Academic, which can be used for educational and research purposes only -->
+<smile version="1.0" id="Network5" numsamples="1000" discsamples="10000">
+	<nodes>
+		<cpt id="ECL4">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9995000000000001 0.0004999999999999449</probabilities>
+		</cpt>
+		<cpt id="Database_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Applicatie_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Hardware_leeftijd2">
+			<state id="New" />
+			<state id="Old" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="SCSI_Diskcabinet">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Hardware_leeftijd2</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0.99 0.01</probabilities>
+		</cpt>
+		<cpt id="BLS1">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Database_cluster Applicatie_cluster SCSI_Diskcabinet</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Internet_VPN_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="ThirdWAN4">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Internet_VPN_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1</probabilities>
+		</cpt>
+		<cpt id="Employee6">
+			<state id="Correct_input" />
+			<state id="Incorrect_input" />
+			<probabilities>0.99 0.01000000000000001</probabilities>
+		</cpt>
+		<cpt id="EDS4">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Employee6</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1</probabilities>
+		</cpt>
+		<cpt id="NewAlertAction">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>ECL4 BLS1 ThirdWAN4 EDS4 Employee6</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="IVR">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="RecordAlertMsgRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>NewAlertAction BLS1 IVR</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ISDN_Telefoon_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="CallEmployee">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>RecordAlertMsgRequest IVR ISDN_Telefoon_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Disconnect">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>CallEmployee IVR ISDN_Telefoon_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="RecordAlertMsgResponse">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS1 IVR RecordAlertMsgRequest</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ECA1">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9995000000000001 0.0004999999999999449</probabilities>
+		</cpt>
+		<cpt id="Copy_of_Database_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Copy_of_Applicatie_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Hardware_leeftijd4">
+			<state id="New" />
+			<state id="Old" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Copy_of_SCSI_Diskcabinet">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Hardware_leeftijd4</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0.99 0.01</probabilities>
+		</cpt>
+		<cpt id="BLS7">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_of_Database_cluster Copy_of_Applicatie_cluster Copy_of_SCSI_Diskcabinet</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Employee_alertSD">
+			<state id="Correct_input" />
+			<state id="Incorrect_input" />
+			<probabilities>0.9995000000000001 0.0004999999999999449</probabilities>
+		</cpt>
+		<cpt id="Copy_of_Internet_VPN_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="third_wan1">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_of_Internet_VPN_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1</probabilities>
+		</cpt>
+		<cpt id="EDS1">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Employee_alertSD</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1</probabilities>
+		</cpt>
+		<cpt id="CommandSendRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>ECA1 BLS7 Employee_alertSD third_wan1 EDS1</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_of_IVR">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="sendAlertMsgRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>CommandSendRequest BLS7 Copy_of_IVR</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_of_ISDN_Telefoon_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Participant">
+			<state id="Answers_Phone" />
+			<state id="No_time" />
+			<state id="Cell_phone_off_lost" />
+			<state id="Not_at_home" />
+			<state id="Another_call_accepted" />
+			<state id="Sleeping" />
+			<probabilities>0.7 0.15 0.05 0.05 0.025 0.025</probabilities>
+		</cpt>
+		<cpt id="Telefoon_Area_switchboard">
+			<state id="Normal" />
+			<state id="Overloaded" />
+			<probabilities>0.99 0.01</probabilities>
+		</cpt>
+		<cpt id="Participant_connection">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Participant Telefoon_Area_switchboard</parents>
+			<probabilities>0.99 0.01 0.9 0.1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="callParticipant">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>sendAlertMsgRequest Copy_of_IVR Copy_of_ISDN_Telefoon_connectie Participant_connection</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CallAccepted">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>callParticipant Copy_of_IVR Copy_of_ISDN_Telefoon_connectie Participant_connection</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="sendAlertMsgResponse">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS7 Copy_of_IVR sendAlertMsgRequest</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="PlayAlertMsg">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_of_IVR CallAccepted Copy_of_ISDN_Telefoon_connectie Participant_connection</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_ISDN_Telefoon_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_Database_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_Applicatie_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Hardware_leeftijd1">
+			<state id="New" />
+			<state id="Old" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_SCSI_Diskcabinet">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Hardware_leeftijd1</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0.99 0.01</probabilities>
+		</cpt>
+		<cpt id="BLS4">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_Database_cluster Copy_2_of_Applicatie_cluster Copy_2_of_SCSI_Diskcabinet</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_IVR">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Participant_responses">
+			<state id="Normal" />
+			<state id="Many" />
+			<probabilities>0.95 0.05</probabilities>
+		</cpt>
+		<cpt id="Copy_of_Telefoon_Wijkcentrale">
+			<state id="Normaal" />
+			<state id="Overloaded" />
+			<parents>Participant_responses</parents>
+			<probabilities>1 0 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Inkomende_ISDN_lijnen_bezet">
+			<state id="average" />
+			<state id="maximum_30" />
+			<parents>Participant_responses</parents>
+			<probabilities>1 0 0.1 0.9</probabilities>
+		</cpt>
+		<cpt id="Copy_of_Deelnemer_Telefoon_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_of_Telefoon_Wijkcentrale Inkomende_ISDN_lijnen_bezet</parents>
+			<probabilities>0.99 0.01000000000000001 0.5 0.5 0.9 0.1 0.25 0.75</probabilities>
+		</cpt>
+		<cpt id="CallIVRSystem">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_IVR Copy_2_of_ISDN_Telefoon_connectie Copy_of_Deelnemer_Telefoon_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="VerifyParticipantRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS4 Copy_2_of_IVR CallIVRSystem</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="VerifyParticipantResponse">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS4 Copy_2_of_IVR VerifyParticipantRequest</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Participant_CLIP">
+			<state id="On" />
+			<state id="Off" />
+			<probabilities>0.99 0.01000000000000001</probabilities>
+		</cpt>
+		<cpt id="ForwardParticipantRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS4 Copy_2_of_IVR VerifyParticipantResponse Participant_CLIP</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ForwardParticipantResponse">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS4 Copy_2_of_IVR ForwardParticipantRequest</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CallEmployee3">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_ISDN_Telefoon_connectie ForwardParticipantResponse</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Participant_waiting_queue_time">
+			<state id="normal" />
+			<state id="Too_long" />
+			<parents>Participant_responses</parents>
+			<probabilities>1 0 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="CallAccepted4">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_IVR Copy_2_of_ISDN_Telefoon_connectie CallEmployee3 Participant_waiting_queue_time</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ParticipantContactStatusUpdate">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS4 Copy_2_of_IVR ForwardParticipantResponse</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="PlayPrompt">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_IVR Copy_2_of_ISDN_Telefoon_connectie Copy_of_Deelnemer_Telefoon_connectie VerifyParticipantResponse</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ECL3">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9995000000000001 0.0004999999999999449</probabilities>
+		</cpt>
+		<cpt id="Copy_3_of_Database_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Copy_3_of_Applicatie_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Hardware_age">
+			<state id="New" />
+			<state id="Old" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Copy_3_of_SCSI_Diskcabinet">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Hardware_age</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0.99 0.01000000000000001</probabilities>
+		</cpt>
+		<cpt id="BLS2">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_3_of_Database_cluster Copy_3_of_Applicatie_cluster Copy_3_of_SCSI_Diskcabinet</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_Internet_VPN_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="ThirdWAN3">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_Internet_VPN_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1</probabilities>
+		</cpt>
+		<cpt id="Employee_listenSD">
+			<state id="Correct_input" />
+			<state id="Incorrect_input" />
+			<probabilities>0.99 0.01000000000000001</probabilities>
+		</cpt>
+		<cpt id="EDS3">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Employee_listenSD</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1</probabilities>
+		</cpt>
+		<cpt id="CommandListenToResponseParticipant">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>ECL3 BLS2 ThirdWAN3 EDS3 Employee_listenSD</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_3_of_IVR">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="ListenToWaveRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>CommandListenToResponseParticipant BLS2 Copy_3_of_IVR</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_3_of_ISDN_Telephone_connection">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="CallEmployee5">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>ListenToWaveRequest Copy_3_of_IVR Copy_3_of_ISDN_Telephone_connection</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="PlayRequestedResponseToAlertMsg">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_3_of_IVR Copy_3_of_ISDN_Telephone_connection CallEmployee5</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Disconnect2">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_3_of_IVR Copy_3_of_ISDN_Telephone_connection PlayRequestedResponseToAlertMsg</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ListenToWaveResponse">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS2 Copy_3_of_IVR ListenToWaveRequest</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ECA2">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9995000000000001 0.0004999999999999449</probabilities>
+		</cpt>
+		<cpt id="Copy_4_of_Database_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Copy_4_of_Applicatie_cluster">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Hardware_leeftijd3">
+			<state id="New" />
+			<state id="Old" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Copy_4_of_SCSI_Diskcabinet">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Hardware_leeftijd3</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0.99 0.01</probabilities>
+		</cpt>
+		<cpt id="BLS6">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_4_of_Database_cluster Copy_4_of_Applicatie_cluster Copy_4_of_SCSI_Diskcabinet</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_3_of_Internet_VPN_connection">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="thirdWAN2">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_3_of_Internet_VPN_connection</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1</probabilities>
+		</cpt>
+		<cpt id="Employee_returncallSD">
+			<state id="Correcte_invoer" />
+			<state id="Incorrecte_invoer" />
+			<probabilities>0.99 0.01000000000000001</probabilities>
+		</cpt>
+		<cpt id="EDS2">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Employee_returncallSD</parents>
+			<probabilities>0.9995000000000001 0.0004999999999999449 0 1</probabilities>
+		</cpt>
+		<cpt id="CommandReturnCallParticipant">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>ECA2 BLS6 thirdWAN2 EDS2 Employee_returncallSD</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_4_of_IVR">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="ReturnCallParticipantRequest">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>CommandReturnCallParticipant BLS6 Copy_4_of_IVR</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Copy_4_of_ISDN_Telefoon_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<probabilities>0.9999 9.999999999998899e-05</probabilities>
+		</cpt>
+		<cpt id="Participant_return_SD">
+			<state id="Answers_phone" />
+			<state id="No_time" />
+			<state id="Cell_phone_lost_off" />
+			<state id="Not_at_home" />
+			<state id="Another_call_accepted" />
+			<state id="Sleeping" />
+			<probabilities>0.9 0.05 0 0 0.05 0</probabilities>
+		</cpt>
+		<cpt id="Copy_of_Deelnemer_reacties">
+			<state id="Normaal" />
+			<state id="Many" />
+			<probabilities>0.95 0.05</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_Telefoon_Wijkcentrale">
+			<state id="Normaal" />
+			<state id="Overloaded" />
+			<parents>Copy_of_Deelnemer_reacties</parents>
+			<probabilities>0.99 0.01 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Copy_2_of_Deelnemer_Telefoon_connectie">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Participant_return_SD Copy_2_of_Telefoon_Wijkcentrale</parents>
+			<probabilities>0.99 0.01 0.9 0.1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CallParticipant2">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_2_of_Deelnemer_Telefoon_connectie ReturnCallParticipantRequest Copy_4_of_ISDN_Telefoon_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CallAccepted5">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>CallParticipant2 Copy_2_of_Deelnemer_Telefoon_connectie Copy_4_of_ISDN_Telefoon_connectie</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CallEmployee34">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_4_of_IVR Copy_4_of_ISDN_Telefoon_connectie CallAccepted5</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CallAccepted6">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_4_of_IVR Copy_4_of_ISDN_Telefoon_connectie CallEmployee34</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Disconnect8">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>Copy_4_of_IVR Copy_4_of_ISDN_Telefoon_connectie CallAccepted6</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="ReturnCallParticipantResponse">
+			<state id="Success" />
+			<state id="Failure" />
+			<parents>BLS6 Copy_4_of_IVR ReturnCallParticipantRequest</parents>
+			<probabilities>0.9999 9.999999999998899e-05 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+	</nodes>
+	<cases>
+		<case name="Predictive - Wijkcentrale overbelast">
+			<evidence node="Telefoon_Area_switchboard" state="Overloaded" />
+			<evidence node="Participant_responses" state="Many" />
+			<evidence node="Copy_of_Telefoon_Wijkcentrale" state="Overloaded" />
+			<evidence node="Copy_2_of_Telefoon_Wijkcentrale" state="Overloaded" />
+		</case>
+		<case name="Predictive - Veel reacties deelnemers">
+			<evidence node="Participant_responses" state="Many" />
+			<evidence node="Copy_of_Deelnemer_reacties" state="Many" />
+		</case>
+		<case name="Gemiddeld - Normaal">
+		</case>
+		<case name="Diagnostic - reactie actieve deelnemer">
+			<evidence node="CallAccepted4" state="Failure" />
+		</case>
+		<case name="Diagnostic - ingesproken reactie beluisteren">
+			<evidence node="Disconnect2" state="Failure" />
+			<evidence node="CommandReturnCallParticipant" state="Failure" />
+			<evidence node="ReturnCallParticipantRequest" state="Failure" />
+			<evidence node="CallParticipant2" state="Failure" />
+			<evidence node="CallAccepted5" state="Failure" />
+			<evidence node="CallEmployee34" state="Failure" />
+			<evidence node="CallAccepted6" state="Failure" />
+			<evidence node="Disconnect8" state="Failure" />
+			<evidence node="ReturnCallParticipantResponse" state="Failure" />
+		</case>
+		<case name="Diagnostic - Deelnemer terugbellen na beluisteren ingesproken reactie">
+			<evidence node="Disconnect8" state="Failure" />
+		</case>
+		<case name="Predictive and diagnostic - Ingesproken reactie beluisteren + telefooncentrale overbelast">
+			<evidence node="Telefoon_Area_switchboard" state="Overloaded" />
+			<evidence node="Participant_responses" state="Many" />
+			<evidence node="Copy_of_Telefoon_Wijkcentrale" state="Overloaded" />
+			<evidence node="Disconnect2" state="Failure" />
+			<evidence node="CommandReturnCallParticipant" state="Failure" />
+			<evidence node="ReturnCallParticipantRequest" state="Failure" />
+			<evidence node="Copy_2_of_Telefoon_Wijkcentrale" state="Overloaded" />
+			<evidence node="CallParticipant2" state="Failure" />
+			<evidence node="CallAccepted5" state="Failure" />
+			<evidence node="CallEmployee34" state="Failure" />
+			<evidence node="CallAccepted6" state="Failure" />
+			<evidence node="Disconnect8" state="Failure" />
+			<evidence node="ReturnCallParticipantResponse" state="Failure" />
+		</case>
+	</cases>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.1.1104.0 ACADEMIC" name="Supermodel" faultnameformat="nodestate">
+			<submodel id="Alert_participants">
+				<name>Alert participants</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" width="2" />
+				<font color="000000" name="Arial" size="8" />
+				<position>87 244 252 273</position>
+				<node id="CommandSendRequest">
+					<name>CommandSendRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>428 139 523 201</position>
+					<barchart active="true" width="184" height="54" />
+				</node>
+				<node id="sendAlertMsgRequest">
+					<name>SendAlertMsgRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>422 235 517 297</position>
+					<barchart active="true" width="173" height="54" />
+				</node>
+				<node id="callParticipant">
+					<name>CallParticipant</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>422 373 517 435</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="CallAccepted">
+					<name>CallAccepted</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>421 459 516 521</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="sendAlertMsgResponse">
+					<name>SendAlertMsgResponse</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>227 547 322 609</position>
+					<barchart active="true" width="142" height="54" />
+				</node>
+				<node id="ECA1">
+					<name>Employee Client Application</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>60 80 155 142</position>
+					<barchart active="true" width="157" height="54" />
+				</node>
+				<node id="EDS1">
+					<name>Employee Desktop System</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>290 20 385 82</position>
+					<barchart active="true" width="179" height="54" />
+				</node>
+				<node id="BLS7">
+					<name>Business Logic Server</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>228 231 323 293</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_of_IVR">
+					<name>IVR</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>57 476 152 538</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="third_wan1">
+					<name>Third Party WAN</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>690 140 785 202</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Copy_of_Internet_VPN_connectie">
+					<name>Internet VPN connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>690 59 785 121</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Copy_of_ISDN_Telefoon_connectie">
+					<name>ISDN telephone connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>680 541 775 603</position>
+					<barchart active="true" width="163" height="54" />
+				</node>
+				<node id="Copy_of_Database_cluster">
+					<name>Database cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>55 155 150 217</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_of_Applicatie_cluster">
+					<name>Application cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>55 235 150 297</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_of_SCSI_Diskcabinet">
+					<name>SCSI Diskcabinet</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>55 314 150 376</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Employee_alertSD">
+					<name>Employee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>512 20 607 82</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="PlayAlertMsg">
+					<name>PlayAlertMsg</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>421 544 516 606</position>
+					<barchart active="true" width="129" height="54" />
+				</node>
+				<node id="Participant_connection">
+					<name>Participant telephone connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>670 369 765 431</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="Participant">
+					<name>Participant</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>649 246 744 308</position>
+					<barchart active="true" width="226" height="129" />
+				</node>
+				<node id="Telefoon_Area_switchboard">
+					<name>Telephone Local Area Switchboard</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>691 459 786 521</position>
+					<barchart active="true" width="133" height="68" />
+				</node>
+				<textbox>
+					<caption>The main function ”alert participant&quot; sends the initial pre-recorded message to all participant by calling them using the IVR via outgoing ISDN telephone lines</caption>
+					<font color="000000" name="Arial" size="8" />
+					<position>13 20 234 76</position>
+				</textbox>
+				<node id="Hardware_leeftijd4">
+					<name>Hardware age</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>49 400 142 458</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+			</submodel>
+			<submodel id="Record_response_active_participant">
+				<name>Record response active participant</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" width="2" />
+				<font color="000000" name="Arial" size="8" />
+				<position>74 321 270 349</position>
+				<node id="CallEmployee3">
+					<name>CallEmployee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>543 658 638 720</position>
+					<barchart active="true" width="126" height="54" />
+				</node>
+				<node id="VerifyParticipantRequest">
+					<name>VerifyParticipantRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>529 166 624 228</position>
+					<comment>\nInfo here</comment>
+					<barchart active="true" width="155" height="68" />
+				</node>
+				<node id="CallAccepted4">
+					<name>CallAccepted</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>544 773 639 835</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="ParticipantContactStatusUpdate">
+					<name>ParticipantContactStatusUpdate</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>339 769 434 831</position>
+					<barchart active="true" width="189" height="68" />
+				</node>
+				<node id="BLS4">
+					<name>Business Logic Server</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>250 212 345 274</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_2_of_IVR">
+					<name>IVR</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>105 476 200 538</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_2_of_ISDN_Telefoon_connectie">
+					<name>ISDN telefoon connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>814 324 909 386</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Copy_2_of_Database_cluster">
+					<name>Database cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>70 113 165 175</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_2_of_Applicatie_cluster">
+					<name>Application cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>73 203 168 265</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_2_of_SCSI_Diskcabinet">
+					<name>SCSI Diskcabinet</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>73 286 168 348</position>
+					<comment>Info here\n</comment>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="CallIVRSystem">
+					<name>CallIVRSystem</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>530 58 625 120</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="Copy_of_Deelnemer_Telefoon_connectie">
+					<name>Participant telephone connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>957 103 1052 165</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="Participant_CLIP">
+					<name>Participant CLIP</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>134 608 229 670</position>
+					<barchart active="true" width="181" height="54" />
+					<defcomment row="0" col="1">Voor validatie is het noodzakelijk dat de deelnemer calling line identification presentation (CLIP) aan heeft staan.</defcomment>
+				</node>
+				<node id="VerifyParticipantResponse">
+					<name>VerifyParticipantResponse</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>535 257 630 319</position>
+					<barchart active="true" width="185" height="54" />
+				</node>
+				<node id="ForwardParticipantRequest">
+					<name>ForwardParticipantRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>546 436 641 498</position>
+					<barchart active="true" width="166" height="68" />
+				</node>
+				<node id="ForwardParticipantResponse">
+					<name>ForwardParticipantResponse</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>502 552 597 614</position>
+					<barchart active="true" width="165" height="68" />
+				</node>
+				<node id="PlayPrompt">
+					<name>PlayPrompt</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>624 348 719 410</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="Participant_waiting_queue_time">
+					<name>Participant waiting queue time</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>754 696 849 758</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="Participant_responses">
+					<name>Number of responses by participants</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>970 599 1065 661</position>
+					<barchart active="true" width="219" height="54" />
+				</node>
+				<node id="Copy_of_Telefoon_Wijkcentrale">
+					<name>Telefoon Local Area Switchboard</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>857 473 952 535</position>
+					<barchart active="true" width="194" height="64" />
+				</node>
+				<node id="Inkomende_ISDN_lijnen_bezet">
+					<name>Incoming ISDN lines occupied</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>1039 472 1134 534</position>
+					<barchart active="true" width="145" height="64" />
+				</node>
+				<textbox>
+					<caption>In this interaction scenario: &quot;Record response active participant&quot;, participants can call the system with information regarding the alert. This will then be recorded and stored, or possibly, an employee will immediately contact the participant</caption>
+					<font color="000000" name="Arial" size="8" />
+					<position>222 17 419 115</position>
+				</textbox>
+				<node id="Hardware_leeftijd1">
+					<name>Hardware Age</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>72 382 165 440</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+			</submodel>
+			<submodel id="Listen_to_response">
+				<name>Listen to response</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" width="2" />
+				<font color="000000" name="Arial" size="8" />
+				<position>325 321 436 349</position>
+				<node id="CommandListenToResponseParticipant">
+					<name>CommandListenToResponseParticipant</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>501 147 596 209</position>
+					<barchart active="true" width="213" height="64" />
+				</node>
+				<node id="ListenToWaveRequest">
+					<name>ListenToWaveRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>503 270 598 332</position>
+					<barchart active="true" width="153" height="64" />
+				</node>
+				<node id="CallEmployee5">
+					<name>CallEmployee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>506 396 601 458</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+				<node id="Disconnect2">
+					<name>Disconnect</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>503 593 598 655</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+				<node id="ListenToWaveResponse">
+					<name>ListenToWaveResponse</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>251 595 346 657</position>
+					<barchart active="true" width="186" height="64" />
+				</node>
+				<node id="ECL3">
+					<name>Employee Client App</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>292 46 387 108</position>
+					<barchart active="true" width="144" height="64" />
+				</node>
+				<node id="EDS3">
+					<name>Employee Desktop System</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>496 42 591 104</position>
+					<barchart active="true" width="179" height="62" />
+				</node>
+				<node id="BLS2">
+					<name>Business Logic Server</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>249 285 344 347</position>
+					<barchart active="true" width="144" height="64" />
+				</node>
+				<node id="Copy_3_of_IVR">
+					<name>IVR</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>117 494 212 556</position>
+					<barchart active="true" width="144" height="64" />
+				</node>
+				<node id="ThirdWAN3">
+					<name>Third Party WAN</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>730 147 825 209</position>
+					<barchart active="true" width="145" height="64" />
+				</node>
+				<node id="Copy_2_of_Internet_VPN_connectie">
+					<name>Internet VPN connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>728 245 823 307</position>
+					<barchart active="true" width="145" height="64" />
+				</node>
+				<node id="Copy_3_of_ISDN_Telephone_connection">
+					<name>ISDN telefoon connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>721 490 816 552</position>
+					<barchart active="true" width="145" height="64" />
+				</node>
+				<node id="Copy_3_of_Database_cluster">
+					<name>Database cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>64 103 159 165</position>
+					<barchart active="true" width="144" height="64" />
+				</node>
+				<node id="Copy_3_of_Applicatie_cluster">
+					<name>Application cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>69 217 164 279</position>
+					<barchart active="true" width="144" height="64" />
+				</node>
+				<node id="Copy_3_of_SCSI_Diskcabinet">
+					<name>SCSI Diskcabinet</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>66 314 161 376</position>
+					<barchart active="true" width="144" height="64" />
+				</node>
+				<node id="Employee_listenSD">
+					<name>Employee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>707 42 802 104</position>
+					<barchart active="true" width="181" height="64" />
+				</node>
+				<node id="PlayRequestedResponseToAlertMsg">
+					<name>PlayRequestedResponseToAlertMsg</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>503 495 598 557</position>
+					<barchart active="true" width="200" height="64" />
+				</node>
+				<textbox>
+					<caption>In the Interaction scenario &quot;Listen to response&quot;, the employee listens to a stored response from a participant to an alert message</caption>
+					<font color="000000" name="Arial" size="8" />
+					<position>44 41 253 97</position>
+				</textbox>
+				<node id="Hardware_age">
+					<name>Hardware Age</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>64 413 157 471</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+			</submodel>
+			<submodel id="Return_call_participant">
+				<name>Return-call participant</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" width="2" />
+				<font color="000000" name="Arial" size="8" />
+				<position>598 321 726 349</position>
+				<node id="CommandReturnCallParticipant">
+					<name>CommandReturnCallParticipant</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>543 149 638 211</position>
+					<barchart active="true" width="186" height="68" />
+				</node>
+				<node id="ReturnCallParticipantRequest">
+					<name>ReturnCallParticipantRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>540 239 635 301</position>
+					<barchart active="true" width="175" height="68" />
+				</node>
+				<node id="CallEmployee34">
+					<name>CallEmployee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>546 555 641 617</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="Disconnect8">
+					<name>Disconnect</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>551 768 646 830</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="ReturnCallParticipantResponse">
+					<name>ReturnCallParticipantResponse</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>338 773 433 835</position>
+					<barchart active="true" width="183" height="68" />
+				</node>
+				<node id="ECA2">
+					<name>Employee Client App</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>248 92 343 154</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="EDS2">
+					<name>Employee Desktop System</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>409 22 504 84</position>
+					<barchart active="true" width="179" height="54" />
+					<defcomment row="0" col="1">De aanname hier is dat incorrecte invoer niet altijd er voor zorgt dat de Desktop GIS onbetrouwbaar wordt (b.v. crashed)</defcomment>
+				</node>
+				<node id="BLS6">
+					<name>Business Logic Server</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>260 270 355 332</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_4_of_IVR">
+					<name>IVR</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>205 534 300 596</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="thirdWAN2">
+					<name>Third Party WAN</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>757 129 852 191</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Copy_3_of_Internet_VPN_connection">
+					<name>Internet VPN connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>959 48 1054 110</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Copy_4_of_ISDN_Telefoon_connectie">
+					<name>ISDN telefoon connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>898 679 993 741</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Copy_4_of_Database_cluster">
+					<name>Database cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>80 176 175 238</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_4_of_Applicatie_cluster">
+					<name>Application cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>81 277 176 339</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Copy_4_of_SCSI_Diskcabinet">
+					<name>SCSI Diskcabinet</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>78 363 173 425</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Employee_returncallSD">
+					<name>Employee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>695 30 790 92</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="CallAccepted6">
+					<name>CallAccepted</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>546 659 641 721</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<textbox>
+					<caption>The main IVR function &quot;Return-call participant&quot; is initiated by an employee: after listening to a recorded response to an alert message by a participant, the employee can initiate a call to that participant in order to gain more information</caption>
+					<font color="000000" name="Arial" size="8" />
+					<position>26 33 220 131</position>
+				</textbox>
+				<node id="CallParticipant2">
+					<name>CallParticipant</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>547 355 642 417</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="CallAccepted5">
+					<name>CallAccepted</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>546 457 641 519</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="Copy_2_of_Deelnemer_Telefoon_connectie">
+					<name>Participant telephone connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>942 390 1037 452</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="Participant_return_SD">
+					<name>Participant</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>912 253 1007 315</position>
+					<barchart active="true" width="236" height="126" />
+				</node>
+				<node id="Copy_2_of_Telefoon_Wijkcentrale">
+					<name>Telefoon Local Area Switchboard</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>946 488 1041 550</position>
+					<barchart active="true" width="189" height="54" />
+				</node>
+				<node id="Copy_of_Deelnemer_reacties">
+					<name>Number of responses by participants</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>944 574 1039 636</position>
+					<barchart active="true" width="204" height="54" />
+					<defcomment row="0" col="1">Voor validatie is het noodzakelijk dat de deelnemer calling line identification presentation (CLIP) aan heeft staan.</defcomment>
+				</node>
+				<node id="Hardware_leeftijd3">
+					<name>Hardware Age</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>76 462 169 520</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+			</submodel>
+			<submodel id="Record_initial_alert_message_for_all_participants">
+				<name>Record initial alert message for all participants</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" width="2" />
+				<font color="000000" name="Arial" size="8" />
+				<position>41 161 298 189</position>
+				<node id="NewAlertAction">
+					<name>NewAlertAction</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>584 330 679 392</position>
+					<barchart active="true" width="130" height="54" />
+				</node>
+				<node id="RecordAlertMsgRequest">
+					<name>RecordAlertMsgRequest</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>579 424 674 486</position>
+					<barchart active="true" width="161" height="54" />
+				</node>
+				<node id="CallEmployee">
+					<name>CallEmployee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>624 520 719 582</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="Disconnect">
+					<name>Disconnect</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>623 612 718 674</position>
+					<barchart active="true" width="128" height="54" />
+				</node>
+				<node id="RecordAlertMsgResponse">
+					<name>RecordAlertMsgResponse</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>485 703 580 765</position>
+					<barchart active="true" width="156" height="68" />
+				</node>
+				<node id="ECL4">
+					<name>Employee Client App</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>355 236 450 298</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="EDS4">
+					<name>Employee Desktop System</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>580 236 675 298</position>
+					<barchart active="true" width="179" height="54" />
+				</node>
+				<node id="BLS1">
+					<name>Business Logic Server</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>293 439 388 501</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="IVR">
+					<name>IVR</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>297 626 392 688</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="ThirdWAN4">
+					<name>Third Party WAN</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>857 330 952 392</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Internet_VPN_connectie">
+					<name>Internet VPN connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>859 472 954 534</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="ISDN_Telefoon_connectie">
+					<name>ISDN telefoon connection</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>832 609 927 671</position>
+					<barchart active="true" width="145" height="54" />
+				</node>
+				<node id="Database_cluster">
+					<name>Database cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>109 355 204 417</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Applicatie_cluster">
+					<name>Application cluster</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>114 442 209 504</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="SCSI_Diskcabinet">
+					<name>SCSI Diskcabinet</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>112 534 207 596</position>
+					<barchart active="true" width="144" height="54" />
+				</node>
+				<node id="Employee6">
+					<name>Employee</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>795 237 890 299</position>
+					<barchart active="true" width="181" height="54" />
+				</node>
+				<node id="Hardware_leeftijd2">
+					<name>Hardware age</name>
+					<interior color="e5f6f7" />
+					<outline color="000080" />
+					<font color="000000" name="Arial" size="8" />
+					<position>107 620 200 678</position>
+					<barchart active="true" width="128" height="64" />
+				</node>
+				<textbox>
+					<caption>The main fucntion &quot;record message&quot; is responsible for catpuring a message, recorded via telephone, when creating a new action in the IVR system before participants are informed of this action. This message should be recorded by the employee responsible for the new action.</caption>
+					<font color="000000" name="Arial" size="8" />
+					<position>82 130 282 228</position>
+				</textbox>
+			</submodel>
+		</genie>
+	</extensions>
+</smile>
