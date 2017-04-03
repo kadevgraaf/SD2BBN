@@ -101,7 +101,7 @@
       },
       addNode: function(id, label, values, probs) {
         var width = 150;
-        var height = values.length * 15 + 20; 
+        var height = values.length * 15 + 20;
         var node = {
           id: id,
           label: label,
@@ -241,7 +241,7 @@
   function drawNodes(options) {
     var graph = options.graph;
     var SAMPLES = options.samples || 10000;
-    
+
     var nodes = d3.select(options.id)
       .selectAll('g')
       .data(graph.nodes)
@@ -252,7 +252,7 @@
           transform: function(d) { return d.translate(); },
           class: 'node-group'
         })
-        .on('mousedown', function(d) { 
+        .on('mousedown', function(d) {
           d3.selectAll('g.node-group').sort(function(a, b) {
             if(a.id !== d.id) {
               return -1;
@@ -302,7 +302,7 @@
             var v = h.attributes['data-value'].value;
             var g = graph.graph;
             var node = g.node(id);
-          
+
             if(undefined === node.isObserved || false === node.isObserved) {
               g.observe(id, v);
               g.sample(SAMPLES);
@@ -317,13 +317,13 @@
                 g.sample(SAMPLES);
               }
             }
-          
+
             for(var i=0; i < g.nodes.length; i++) {
               var nOut = g.nodes[i];
               var nIn = graph.nodes[i];
               nIn.probs = nOut.probs();
             }
-          
+
             for(var i=0; i < graph.nodes.length; i++) {
               var node = graph.nodes[i];
               for(var j=0; j < node.values.length; j++) {
@@ -334,7 +334,7 @@
                   .attr({
                     width: prob
                   });
-                
+
                 selector = 'text[data-node="' + node.id + '"][data-pvalue="' + value + '"]';
                 d3.select(selector)
                   .text(formatPct(node.probs[j]));
@@ -385,7 +385,7 @@
       var width = d.width - 50;
       var xInc = width / 4.0;
       var x = 50 + xInc;
-      
+
       for(var i=0; i < 3; i++) {
         d3.select(this)
           .append('line')
@@ -513,7 +513,7 @@
     lib.draw = function(options) {
       drawGraph(options);
     }
-    
+
     lib.downloadSamples = function(graph, asJson, options) {
       var data, filename;
       if(asJson) {
@@ -527,7 +527,7 @@
       }
       downloadData(data, filename);
     }
-    
+
     return lib;
   }
 
