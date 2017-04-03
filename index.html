@@ -43,6 +43,7 @@
         {
             d3.select("#bbn").remove();
             d3.select("body").append("svg").attr("id", "bbn");
+            //svg.selectAll("*").remove();
             var graph = jsbayes.newGraph();
             graph.saveSamples = true;
 
@@ -52,16 +53,30 @@
             var interactionnodesBBNIDs = new Array;
             //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
             var interactionNodeDetails = new Array;
+            var DependentSourceLifelineIncoming = new Array;
+            var DependentSourceLifelineOutgoing = new Array;
             var sourceNameList;
             var targetNameList;
             var lifelineList;
+
+            //$("#xmlArea").val(x2js.json2xml_str($.parseJSON($("#jsonArea").val())));
+            //var lifelineList = doc.getElementsByTagName("lifeline");
+            //var lifelineList = document.getElementsByTagName("lifeline");
             var lifelineList = document.getElementsByTagName("lifeline");
+            //console.log(lifelineList);
+            //$("#output").html($("#output").html() + lifelineList + "<br/>")
             var connectorList = document.getElementsByTagName("connector");
+            //console.log(connectorList);
+            //$("#output").html($("#output").html() + connectorList + "<br/>")
             for (i = 0; i < lifelineList.length; i++)
             {
               //LIFELINELIST
               var lifelineNode = lifelineList.item(i);
+              //console.log("" + lifelineNode.attributes.getNamedItem("name").value);
+              //console.log("" + lifelineNode.attributes.getNamedItem("xmi:id").value);
+              //$("#output").html($("#output").html() + lifelineNode.attributes.getNamedItem("name").value + "(id: "+ lifelineNode.attributes.getNamedItem("xmi:id").value + ")<br/>")
 
+              //lifelinenodesBBN[i] = graph.addNode(lifelineNode.attributes.getNamedItem("name").value.replace(/ /g,''), ['success', 'failure']);
               lifelinenodesBBN[i] = graph.addNode(lifelineNode.attributes.getNamedItem("name").value, ['success', 'failure']);
               lifelinenodesBBNIDs[i] = lifelineNode.attributes.getNamedItem("xmi:id").value;
               lifelinenodesBBN[i].setCpt([ 0.9, 0.1]);
@@ -73,36 +88,52 @@
 
                 var childNode = connectorList.item(i);
                 var nodeID = childNode.attributes.getNamedItem("xmi:idref").value;
+                //console.log(nodeID);
                 //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                //interactionNodeDetails[nodeID] = ['', nodeID, '', '', '', '', ''];
                 interactionNodeDetails[i] = ['', nodeID, 0, '', '', '', 0];
 
                 var connectorNodelist = childNode.childNodes;//alternative is use of .children
 
                 for (j = 0; j < connectorNodelist.length; j++)
                 {
+                    //console.log(nodeID);
                     var connectoreChilddNodes = connectorNodelist.item(j);
+                    //console.log("" + connectoreChilddNodes.nodeName);
 
                     if (connectoreChilddNodes.nodeName.toUpperCase() === "PROPERTIES")
                     {
                         //get name of interaction
+                        //console.log(connectoreChilddNodes);
                         if (connectoreChilddNodes.attributes.getNamedItem("ea_type").value.toUpperCase() === 'SEQUENCE')
                         {
                             var name = connectoreChilddNodes.attributes.getNamedItem("name").value;
+                            //console.log(name);
                             //create connector node
+                            //var latest = Object.keys(interactionnodesBBN).length++;
+                            //interactionnodesBBN[latest] = graph.addNode(name, ['success', 'failure']);
+                            //interactionnodesBBN[nodeID] = graph.addNode(name, ['success', 'failure']);
+                            //interactionnodesBBNIDs[latest] = nodeID;
                             //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
                             interactionNodeDetails[i][0] = name;
                             interactionNodeDetails[i][6] = 'sequence';
+                            //console.log("details " + interactionNodeDetails[latest][3]);
                             var Interaction = true;
 
                             var connectoreChilddNodesProperties = connectoreChilddNodes.childNodes;
+                            //console.log(connectoreChilddNodesProperties);
 
                             for (n = 0; n < connectoreChilddNodesProperties.length; n++)
                             {
+                                //console.log(nodeID);
                                 var connectoreChilddNodesPropertiesNode = connectoreChilddNodesProperties.item(n);
                                 //get sequence of interaction
                                 if (connectoreChilddNodesPropertiesNode.nodeName.toUpperCase() === "APPEARANCE")
                                 {
+                                    //console.log(connectoreChilddNodesPropertiesNode.nodeName.toUpperCase());
+                                    //console.log(connectoreChilddNodesPropertiesNode);
                                     var seqno = connectoreChilddNodesPropertiesNode.attributes.getNamedItem("seqno").value;
+                                    //console.log('sequence ' + seqno);
                                     //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
                                     interactionNodeDetails[i][2] = Number(seqno);
                                 }
@@ -123,39 +154,77 @@
                     if (connectoreChilddNodes.nodeName.toUpperCase() === "SOURCE")
                     {
                         //Make NodeList of Source Node ChildNodes
+                        //console.log(connectoreChilddNodes);
+
+                        //var SourceNodeList = connectoreChilddNodes.childNodes; //alternative is use of .children
                         var SourceNodeList = connectoreChilddNodes;
 
                         //find ID of source lifeline
+                        //console.log(SourceNodeList.attributes.getNamedItem("xmi:idref").value);
                         var id = SourceNodeList.attributes.getNamedItem("xmi:idref").value
                         //find lifeline and make parent node of interaction node.
+                        //for(h = 0; h < Object.keys(lifelinenodesBBNIDs).length; h++){
+                            //console.log(lifelinenodesBBNIDs[h] + ' and ' + id);
+                        //    if (lifelinenodesBBNIDs[h] === id)
+                        //    {
+                                    //var latest = Object.keys(interactionnodesBBN).length;
+                                    //interactionnodesBBN[latest] = graph.addNode('temp' + h+latest, ['success', 'failure']);
+                                    //interactionnodesBBN[latest].addParent(lifelinenodesBBN[h]);
+                                    //interactionnodesBBN[nodeID].addParent(lifelinenodesBBN[h]);
+
                                     //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                                    //interactionNodeDetails[latest][3] = lifelinenodesBBNIDs[h];
                                     interactionNodeDetails[i][3] = id;
                                     interactionNodeDetails[i][5]++;
+                        //    }
+                        //}
                         }
 
                         //get TARGET lifeine/component of interaction
                         if (connectoreChilddNodes.nodeName.toUpperCase() === "TARGET")
                         {
+                            //console.log('Target' + connectoreChilddNodes);
+
                             //Make NodeList of Target Node ChildNodes
                             //var targetNodeList = connectoreChilddNodes.childNodes;
                             var targetNodeList = connectoreChilddNodes;
 
                             //find ID of target lifeline
+                            //console.log(targetNodeList.attributes.getNamedItem("xmi:idref").value);
                             var id = targetNodeList.attributes.getNamedItem("xmi:idref").value
+
+                            //find lifeline and make parent node of interaction node.
+                            //for(l = 0; l < Object.keys(lifelinenodesBBNIDs).length; l++){
+                                //console.log(lifelinenodesBBNIDs[h] + ' and ' + id);
+                            //    if (lifelinenodesBBNIDs[l] === id){
+                                    //var latest = Object.keys(interactionnodesBBN).length;
+                                    //interactionnodesBBN[latest] = graph.addNode('temp' + h+latest, ['success', 'failure']);
+                                    //interactionnodesBBNIDs[latest] = id;
+                                    //interactionnodesBBN[latest].addParent(lifelinenodesBBN[h]);
                                     //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
                                     interactionNodeDetails[i][4] = id;
                                     interactionNodeDetails[i][5]++;
+                                    //console.log("details " + interactionNodeDetails[latest][3]);
+                            //    }
+                            //}
+
                     }
 
                 }
             }
+            //for(h = 0; h < Object.keys(interactionnodesBBN).length; h++)
+            //for(m = 0; m < interactionNodeDetails.length; m++)
+            //console.log(Object.keys(interactionNodeDetails).length);
+            //console.log(interactionNodeDetails);
 
             for(o = 0; o < Object.keys(interactionNodeDetails).length; o++)
             {
                 if (interactionNodeDetails[o][6] !== 'sequence')
                 {
                     //remove non-interaction element from
+                //if (i > -1) {
                     interactionNodeDetails.splice(o, 1);
+                //}
                 }
             }
             for(p = 0; p < Object.keys(interactionNodeDetails).length; p++)
@@ -176,6 +245,7 @@
                             interactionnodesBBN[p].addParent(lifelinenodesBBN[q]);
                         }
                     }
+                    //console.log(interactionNodeDetails[p][5]);
                 }
             }
             for(m = 0; m < Object.keys(interactionNodeDetails).length; m++)
@@ -191,6 +261,25 @@
 
                     for(n = 0; n <  Object.keys(interactionNodeDetails).length; n++)
                     {
+
+                        var sourcelifeline = interactionNodeDetails[m][3];
+                        //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                        if(sourcelifeline === interactionNodeDetails[n][4])
+                        {
+                            //store sequence of other incoming interactions on source lifeline on which current interaction M is dependent
+                            //DependentSourceLifelineIncoming[sourcelifeline] = new Array(n, interactionNodeDetails[n][2]);
+                            //DependentSourceLifelineIncoming[n] = new Array(interactionNodeDetails[n][2]);
+                            DependentSourceLifelineIncoming[n] = interactionNodeDetails[n][2];
+                        }
+                        if(sourcelifeline === interactionNodeDetails[n][3])
+                        {
+                            //store sequence of other outgoing interactions on source lifeline on which current interaction M is dependent
+                            //DependentSourceLifelineOutgoing[sourcelifeline] = new Array(n, interactionNodeDetails[n][2]);
+                            //DependentSourceLifelineOutgoing[n] = new Array(interactionNodeDetails[n][2]);
+                            DependentSourceLifelineOutgoing[n] = interactionNodeDetails[n][2];
+                        }
+
+
                         //find the interaction with the highest sequence number that has
                         //the same lifeline-Target as the lifeline-source of this interaction
                         //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
@@ -202,13 +291,88 @@
                             parentInteractionNodeID = n;
                         }
                     }
+
                     if (minsequence !== -1 && parentInteractionNodeID !== -1 )
                     {
-                    //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                        console.log('current: ' + interactionNodeDetails[m][0]);
+                        console.log(interactionnodesBBN[m]);
+                        //console.log('currentsequence: ' + currentsequence);
+                        //console.log('minseq: ' + minsequence );
+                        //console.log('parent: ' + parentInteractionNodeID + "node: " + interactionNodeDetails[parentInteractionNodeID][0]);
+                        //console.log(interactionnodesBBN);
+                        //console.log(interactionnodesBBN[parentInteractionNodeID]);
+                        //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                        //if (minsequence !== 0 && parentInteractionNodeID !== 0 && m === 5)
+
+                        //console.log('node ' + m);
                         interactionnodesBBN[m].addParent(interactionnodesBBN[parentInteractionNodeID]);
                         //increase number of dependencies for this nodes
                         interactionNodeDetails[m][5]++;
+                        //console.log(interactionnodesBBN[parentInteractionNodeID]);
+
+                        //check for additional failure dependencies on incoming interactions
+                        var lastOutgoingSequence = 0;
+                        for(s = 0; s <  DependentSourceLifelineIncoming.length; s++)
+                        {
+                            //console.log(DependentSourceLifelineOutgoing[s]);
+                            //find maximum sequence number of outgoing node,
+                            //which is smaller (earlier) than minsequence
+                            //(the previous incoming
+                            //interaction on which m has a failure dependency)
+                            if(DependentSourceLifelineOutgoing[s] < minsequence
+                            && DependentSourceLifelineOutgoing[s] > lastOutgoingSequence
+                            && typeof DependentSourceLifelineOutgoing[s] !== 'undefined')
+                            {
+                                //console.log(interactionNodeDetails[s][0]);
+                                //console.log(DependentSourceLifelineOutgoing[s]);
+                                lastOutgoingSequence = DependentSourceLifelineIncoming[s];
+                            }
+                        }
+                        //console.log(lastOutgoingSequence);
+                        console.log(DependentSourceLifelineIncoming);
+                        console.log(minsequence);
+                        console.log(lastOutgoingSequence);
+                        for(r = 0; r <  DependentSourceLifelineIncoming.length; r++)
+                        {
+                            //Find interactions with sequence numbers that
+                            //are smaller (earlier) than minsequence
+                            //(the previous incoming
+                            //interaction on which m has a failure dependency)
+                            // and larger than the last outgoing sequence.
+                            if(DependentSourceLifelineIncoming[r] < minsequence
+                            && DependentSourceLifelineIncoming[r] > lastOutgoingSequence
+                            && DependentSourceLifelineIncoming[r] != null)
+                            {
+                                interactionnodesBBN[m].addParent(interactionnodesBBN[r]);
+                                //increase number of dependencies for this nodes
+                                interactionNodeDetails[m][5]++;
+                                //console.log(interactionnodesBBN[parentInteractionNodeID]);
+                            }
+                            //if there are no outgoing nodes (lastOutgoingSequence === 0)
+                            //, and there is another incoming node,
+                            //add this node as a parent= interaction m has failure dependency on this node.
+                            if(lastOutgoingSequence === 0 &&
+                                DependentSourceLifelineIncoming[r] < minsequence &&
+                                DependentSourceLifelineIncoming[r] != null)
+                            {
+                                interactionnodesBBN[m].addParent(interactionnodesBBN[r]);
+                                //increase number of dependencies for this nodes
+                                interactionNodeDetails[m][5]++;
+                            }
+                            //console.log('DependentSourceLifelineIncoming');
+                            //console.log(DependentSourceLifelineIncoming);
+                            //DependentSourceLifelineIncoming.sort(function(a, b){return a-b});
+                            //console.log(DependentSourceLifelineIncoming);
+
+                            //console.log('DependentSourceLifelineOutgoing');
+                            //console.log(DependentSourceLifelineOutgoing);
+                            //DependentSourceLifelineOutgoing.sort(function(a, b){return a-b});
+                            //console.log(DependentSourceLifelineOutgoing);
+                        }
                     }
+                    //empty sources DependentSourceLifeline
+                    DependentSourceLifelineIncoming.length = 0;
+                    DependentSourceLifelineOutgoing.length = 0;
 
                     //set CPT's of interactions - for each failure dependency the number of state combinations is multiplied by 2
                     switch (interactionNodeDetails[m][5]) {
@@ -302,13 +466,58 @@
                         [ 0.1, 0.9 ]
                         ]);
                     }
-                    console.log(lifelinenodesBBN);
-                    console.log('end');
+                    //console.log(interactionnodesBBN[parentInteractionNodeID]);
+                    //console.log(lifelinenodesBBN);
+                    //console.log('end');
+
+
+                    //console.log('test');
 
                 }
             }
+            //console.log(interactionnodesBBN[6]);
 
-            graph.sample(10000);
+            /*
+            var n1 = graph.addNode('n1', ['true', 'false']);
+            var n2 = graph.addNode('n2', ['true', 'false']);
+            var n3 = graph.addNode('n3', ['true', 'false']);
+            var n4 = graph.addNode('n4', ['true', 'false']);
+            var n5 = graph.addNode('n5', ['yes', 'maybe', 'no']);
+
+            n2.addParent(n1);
+            n3.addParent(n2);
+            n3.addParent(n4);
+            n5.addParent(n4);
+            lifelinenodesBBN[0].addParent(n1);
+            lifelinenodesBBN[0].setCpt([
+              [ 0.8, 0.2 ],
+              [ 0.2, 0.8 ]
+            ]);
+
+            n1.setCpt([ 0.25, 0.75 ]);
+            n2.setCpt([
+              [ 0.8, 0.2 ],
+              [ 0.2, 0.8 ]
+            ]);
+            n3.setCpt([
+              [ 0.99, 0.01 ],
+              [ 0.6, 0.4 ],
+              [ 0.6, 0.4 ],
+              [ 0.01, 0.99 ]
+            ]);
+            n4.setCpt([ 0.6, 0.4 ]);
+            n5.setCpt([
+              [ 0.6, 0.3, 0.1 ],
+              [ 0.1, 0.3, 0.6 ]
+            ]);
+            */
+
+            //graph.sample(20000);
+            graph.sample(1000);
+
+            $('#BBN_text').hide();
+            $('#BBN_text').html("<pre>" + JSON.stringify(graph, null, 4) + "</pre>");
+            //$('#BBN_text').html(graph);
 
             var graph = jsbayesviz.fromGraph(graph);
             jsbayesviz.draw({
@@ -316,8 +525,10 @@
               width: 2500,
               height: 1000,
               graph: graph,
-              samples: 10000
+              //samples: 10000
+              samples: 1000
             });
+            //samples: 15000
 
         }
     }
@@ -346,6 +557,7 @@
         </textarea>
     </div>
     <button id="loadXMLandSD2BBN">SD2BBN</button>
+    <button id="show_text" onclick="$('#BBN_text').toggle();">Show/hide textual representation of BBN</button>
 
     <div id="output">
       <h4>SD2BBN mapping output: </h4>
@@ -356,6 +568,8 @@
         </svg>
     </div>
     <div id='xmloutput'>
+    </div>
+    <div id='BBN_text'>
     </div>
     </center>
 </body>
