@@ -51,10 +51,15 @@
             var lifelinenodesBBNIDs = new Array;
             var interactionnodesBBN = new Array;
             var interactionnodesBBNIDs = new Array;
-            //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
+            var fragmentnodesBBN = new Array;
+            var fragmentnodesBBNIDs = new Array;
+            //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
             var interactionNodeDetails = new Array;
             var DependentSourceLifelineIncoming = new Array;
             var DependentSourceLifelineOutgoing = new Array;
+            //0 = name, 1= type
+            var combinedFragments= new Array;
+
             var sourceNameList;
             var targetNameList;
             var lifelineList;
@@ -67,6 +72,8 @@
             //$("#output").html($("#output").html() + lifelineList + "<br/>")
             var connectorList = document.getElementsByTagName("connector");
             //console.log(connectorList);
+            var fragmentList = document.getElementsByTagName("fragment");
+            //console.log(fragmentList);
             //$("#output").html($("#output").html() + connectorList + "<br/>")
             for (i = 0; i < lifelineList.length; i++)
             {
@@ -77,7 +84,7 @@
               //$("#output").html($("#output").html() + lifelineNode.attributes.getNamedItem("name").value + "(id: "+ lifelineNode.attributes.getNamedItem("xmi:id").value + ")<br/>")
 
               //lifelinenodesBBN[i] = graph.addNode(lifelineNode.attributes.getNamedItem("name").value.replace(/ /g,''), ['success', 'failure']);
-              lifelinenodesBBN[i] = graph.addNode(lifelineNode.attributes.getNamedItem("name").value, ['success', 'failure']);
+              lifelinenodesBBN[i] = graph.addNode(lifelineNode.attributes.getNamedItem("name").value.replace(/\s+/g, '').replace("-", "").replace(/[0-9]/g, ''), ['success', 'failure']);
               lifelinenodesBBNIDs[i] = lifelineNode.attributes.getNamedItem("xmi:id").value;
               lifelinenodesBBN[i].setCpt([ 0.9, 0.1]);
             }
@@ -89,9 +96,10 @@
                 var childNode = connectorList.item(i);
                 var nodeID = childNode.attributes.getNamedItem("xmi:idref").value;
                 //console.log(nodeID);
-                //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                 //interactionNodeDetails[nodeID] = ['', nodeID, '', '', '', '', ''];
-                interactionNodeDetails[i] = ['', nodeID, 0, '', '', '', 0];
+                //interactionNodeDetails[i] = ['', nodeID, 0, '', '', '', 0, sendEvent];
+                interactionNodeDetails[i] = ['', nodeID, 0, '', '', '', 0, '', ''];
 
                 var connectorNodelist = childNode.childNodes;//alternative is use of .children
 
@@ -100,7 +108,6 @@
                     //console.log(nodeID);
                     var connectoreChilddNodes = connectorNodelist.item(j);
                     //console.log("" + connectoreChilddNodes.nodeName);
-
                     if (connectoreChilddNodes.nodeName.toUpperCase() === "PROPERTIES")
                     {
                         //get name of interaction
@@ -114,7 +121,7 @@
                             //interactionnodesBBN[latest] = graph.addNode(name, ['success', 'failure']);
                             //interactionnodesBBN[nodeID] = graph.addNode(name, ['success', 'failure']);
                             //interactionnodesBBNIDs[latest] = nodeID;
-                            //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
+                            //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent, 8=isOptional?, 8=isOptional?
                             interactionNodeDetails[i][0] = name;
                             interactionNodeDetails[i][6] = 'sequence';
                             //console.log("details " + interactionNodeDetails[latest][3]);
@@ -134,21 +141,19 @@
                                     //console.log(connectoreChilddNodesPropertiesNode);
                                     var seqno = connectoreChilddNodesPropertiesNode.attributes.getNamedItem("seqno").value;
                                     //console.log('sequence ' + seqno);
-                                    //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
+                                    //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                                     interactionNodeDetails[i][2] = Number(seqno);
                                 }
                             }
                         }
                         else
                         {
-
                             var Interaction = false;
-                            //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                            //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                             interactionNodeDetails[i][6] = 'other';
                         }
 
                     }
-
 
                     //get SOURCE lifeine/component of interaction
                     if (connectoreChilddNodes.nodeName.toUpperCase() === "SOURCE")
@@ -161,7 +166,7 @@
 
                         //find ID of source lifeline
                         //console.log(SourceNodeList.attributes.getNamedItem("xmi:idref").value);
-                        var id = SourceNodeList.attributes.getNamedItem("xmi:idref").value
+                        var id = SourceNodeList.attributes.getNamedItem("xmi:idref").value;
                         //find lifeline and make parent node of interaction node.
                         //for(h = 0; h < Object.keys(lifelinenodesBBNIDs).length; h++){
                             //console.log(lifelinenodesBBNIDs[h] + ' and ' + id);
@@ -172,10 +177,14 @@
                                     //interactionnodesBBN[latest].addParent(lifelinenodesBBN[h]);
                                     //interactionnodesBBN[nodeID].addParent(lifelinenodesBBN[h]);
 
-                                    //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                                    //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                                     //interactionNodeDetails[latest][3] = lifelinenodesBBNIDs[h];
                                     interactionNodeDetails[i][3] = id;
-                                    interactionNodeDetails[i][5]++;
+                                    //detect self-calls
+                                    if (interactionNodeDetails[i][3] !== interactionNodeDetails[i][4])
+                                    {
+                                        interactionNodeDetails[i][5]++;
+                                    }
                         //    }
                         //}
                         }
@@ -184,7 +193,6 @@
                         if (connectoreChilddNodes.nodeName.toUpperCase() === "TARGET")
                         {
                             //console.log('Target' + connectoreChilddNodes);
-
                             //Make NodeList of Target Node ChildNodes
                             //var targetNodeList = connectoreChilddNodes.childNodes;
                             var targetNodeList = connectoreChilddNodes;
@@ -201,9 +209,13 @@
                                     //interactionnodesBBN[latest] = graph.addNode('temp' + h+latest, ['success', 'failure']);
                                     //interactionnodesBBNIDs[latest] = id;
                                     //interactionnodesBBN[latest].addParent(lifelinenodesBBN[h]);
-                                    //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                                    //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                                     interactionNodeDetails[i][4] = id;
-                                    interactionNodeDetails[i][5]++;
+                                    //detect self-calls
+                                    if (interactionNodeDetails[i][4] !== interactionNodeDetails[i][3])
+                                    {
+                                        interactionNodeDetails[i][5]++;
+                                    }
                                     //console.log("details " + interactionNodeDetails[latest][3]);
                             //    }
                             //}
@@ -217,6 +229,137 @@
             //console.log(Object.keys(interactionNodeDetails).length);
             //console.log(interactionNodeDetails);
 
+            var fragmentList = document.getElementsByTagName("fragment");
+            //console.log(fragmentList);
+            //$("#output").html($("#output").html() + connectorList + "<br/>")
+            //console.log(JSON.stringify(fragmentList));
+            for (i = 0; i < fragmentList.length; i++)
+            {
+              //LIFELINELIST
+              var fragmentNode = fragmentList.item(i);
+              //var fragmentChildNodeID = fragmentChildNode.attributes.getNamedItem("xmi:idref").value;
+              //var fragmentNodeID = fragmentNode.attributes.getNamedItem("xmi:type").value;
+              if (fragmentNode.attributes.getNamedItem("interactionOperator"))
+              { //only select fragments with an operator
+
+                  var fragmentNodeOperator = fragmentNode.attributes.getNamedItem("interactionOperator").value;
+                  //console.log(fragmentNodeOperator);
+                  //for each fragment i create
+                  //array with combinedFragment details  - TODO match to interactions array
+                  //0 = name, 1= type, 2= (array) fragmentInteractionSendEventIds
+                  combinedFragments[i] = [fragmentNodeOperator, fragmentNodeOperator, []];
+
+                  var fragmentNodelist = fragmentNode.childNodes;//alternative is use of .children
+
+                  for (j = 0; j < fragmentNodelist.length; j++)
+                  {
+                      var fragmentChilddNodes = fragmentNodelist.item(j);
+                      if (fragmentChilddNodes.nodeName.toUpperCase() === "OPERAND")
+                      { //only select operand parts of fragments
+                          //console.log(fragmentChilddNodes);
+                          var fragmentChilddNodesOperandList = fragmentChilddNodes.childNodes;//alternative is use of .children
+                          for (k = 0; k < fragmentChilddNodesOperandList.length; k++)
+                          {
+                              var fragmentChilddNodesOperandNodes = fragmentChilddNodesOperandList.item(k);
+                              //console.log(fragmentChilddNodesOperandNodes);
+                              if (fragmentChilddNodesOperandNodes.nodeName.toUpperCase() === "GUARD")
+                              { //Get name of combined fragment = is name of certain nodes in reliability BBN
+                                  //get child
+                                  var fragmentChilddNodesOperandNodesGuardList = fragmentChilddNodesOperandNodes.children;//alternative is use of .children
+                                  for (l = 0; l < fragmentChilddNodesOperandNodesGuardList.length; l++)
+                                  {
+                                      var fragmentChilddNodesOperandNodesGuardListNode = fragmentChilddNodesOperandNodesGuardList.item(l);
+                                      //console.log(fragmentChilddNodesOperandNodesGuardListNode);
+                                          //console.log(fragmentChilddNodesOperandNodesGuardListNode);
+                                          //console.log(fragmentChilddNodesOperandNodesGuardListNode[0]);
+                                          //console.log(fragmentChilddNodesOperandNodesGuardListNode.attributes.getNamedItem("xmi:id").value);
+                                          if (fragmentChilddNodesOperandNodesGuardListNode.attributes.getNamedItem("body"))
+                                          {
+                                              fragmentName = fragmentChilddNodesOperandNodesGuardListNode.attributes.getNamedItem("body").value;
+                                              //console.log(fragmentChilddNodesOperandNodesGuardListNode.attributes.getNamedItem("body").value);
+                                              //0 = name, 1= type, 2= (array) fragmentInteractionSendEventIds
+                                              combinedFragments[i][0] += ' ' + fragmentName;
+                                          }
+                                          //console.log('array: ' + combinedFragments[i]);
+                                    }
+                                }
+                                if (fragmentChilddNodesOperandNodes.nodeName.toUpperCase() === "FRAGMENT")
+                                { //Get IDs of interactions in combined fragment = interactions are nodes in reliability BBN
+                                  //which need to be identified and need a special CPT or link to combined fragment node
+                                    if (fragmentChilddNodesOperandNodes.attributes.getNamedItem("xmi:id"))
+                                    {
+                                        let fragmentInteractionIds = fragmentChilddNodesOperandNodes.attributes.getNamedItem("xmi:id").value;
+                                        combinedFragments[i][2].push(fragmentInteractionIds);
+                                    }
+                                }
+                          }
+                          //console.log('array: ' + combinedFragments[i])
+                      }
+                  }
+              }
+
+            }
+            //console.log('array: ' + combinedFragments)
+            //add send events to interactions in order to map these to combined fragments
+            var messageList = document.getElementsByTagName("message");
+            for (z = 0; z < messageList.length; z++) {
+
+                var messageChildNode = messageList.item(z);
+                var messageNodeID = messageChildNode.attributes.getNamedItem("xmi:id").value;
+                var messageSendEvent = messageChildNode.attributes.getNamedItem("sendEvent").value;
+                //console.log(messageNodeID + ' ' + messageSendEvent);
+                for(s = 0; s < interactionNodeDetails.length; s++)
+                { //go through all interaction IDs
+                    //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
+                    //match interaction send-event IDs to send-event IDs in combinedfragement
+                    if (interactionNodeDetails[s][1] === messageNodeID)
+                    {
+                        interactionNodeDetails[s][7] = messageSendEvent;
+                        //console.log(interactionNodeDetails[s][1]);
+                    }
+                }
+
+            }
+
+            //add information to interactionNodeDetails when it is in a combined fragment
+            for(q = 0; q < combinedFragments.length; q++)
+            {
+                //add details for interactions in optional or alternative combined fragment
+                //combinedFragments: 0 = name, 1= type, 2= (array) fragmentInteractionSendEventIds
+                if (combinedFragments[q])
+                {
+                    if (combinedFragments[q][1] === 'opt')
+                    {
+                        //create optional nodes with state 'does not occur'
+                        //assume that there are interactions in combined fragment
+                        //var fragmentnodesBBN = new Array;
+                        //combinedFragments: 0 = name, 1= type, 2= (array) fragmentInteractionSendEventIds
+                        //fragmentnodesBBN[q] = graph.addNode(combinedFragments[q][0].replace(/\s+/g, '').replace("-", "").replace(/[0-9]/g, '').replace("-", "").replace(/[0-9]/g, ''); , ['DoesNotOccur', 'Occurs']);
+                        //fragmentnodesBBN[q] = graph.addNode(combinedFragments[q][1].replace(/\s+/g, '').replace("-", "").replace(/[0-9]/g, '').replace("-", "").replace(/[0-9]/g, ''); , ['DoesNotOccur', 'Occurs']);
+                        //fragmentnodesBBN[q].setCpt([ 0.7, 0.3]);
+                        //console.log('array: ' + combinedFragments[q]);
+                        for(r = 0; r < combinedFragments[q][2].length; r++)
+                        { //go through all send events of interactions affected by combined fragment
+                            //console.log('test - ID in framgent=' + combinedFragments[q][2][r]);
+                            for(s = 0; s < interactionNodeDetails.length; s++)
+                            { //go through all interaction IDs
+                                //console.log('test interaction ID - ' + interactionNodeDetails[s][7]);
+                                //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent, 9=parentOptFragmentnodesBBNID
+                                //match interaction send-event IDs to send-event IDs in combinedfragement
+                                if (interactionNodeDetails[s][7] === combinedFragments[q][2][r])
+                                {
+
+                                    //set interactionNodeDetails[8] to indicate optional combined fragment when calculating CPTs
+                                    interactionNodeDetails[s][8] = 'opt';
+                                    interactionNodeDetails[s][9] = q; //indicate what ID of fragmentnodesBBN is parent of this interaction node
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // remove non-sequence messages
             for(o = 0; o < Object.keys(interactionNodeDetails).length; o++)
             {
                 if (interactionNodeDetails[o][6] !== 'sequence')
@@ -227,29 +370,57 @@
                 //}
                 }
             }
+            //create interaction nodes + assign parents in BBN
             for(p = 0; p < Object.keys(interactionNodeDetails).length; p++)
             {
+                //console.log(interactionNodeDetails[p]);
                 if (interactionNodeDetails[p][6] === 'sequence')
                 {
-                    //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies
-                    interactionnodesBBN[p] = graph.addNode(interactionNodeDetails[p][0], ['success', 'failure']);
+
+                    //create interaction nodes and linke to parents
+                    //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
+                    if(interactionNodeDetails[p][8] == 'opt')
+                    //if(false)
+                    {
+                        interactionnodesBBN[p] = graph.addNode(interactionNodeDetails[p][0].replace(/\s+/g, '').replace("-", "").replace(/[0-9]/g, ''), ['success', 'failure', 'dno']);
+                        //link interaction nodes to optional node == add parent frament node with ID Q to interactionnodeBBN
+                        //interactionnodesBBN[p].addParent(fragmentnodesBBN[interactionNodeDetails[p][9]]);
+                        //console.log('Interaction mapped to Opt combined fragment' + interactionNodeDetails[p][1]);
+                        //interactionNodeDetails[p][5]++; //interaction node has extra dependency on opt fragment node
+                    }
+                    else {
+                        interactionnodesBBN[p] = graph.addNode(interactionNodeDetails[p][0].replace(/\s+/g, '').replace("-", "").replace(/[0-9]/g, ''), ['success', 'failure']);
+                    }
 
                     //assign interaction failure dependencies to lifeline/component nodes
                     for(q = 0; q < Object.keys(lifelinenodesBBNIDs).length; q++){
-                        if (lifelinenodesBBNIDs[q] === interactionNodeDetails[p][3])
-                        {
-                            interactionnodesBBN[p].addParent(lifelinenodesBBN[q]);
+                        if (interactionNodeDetails[p][4] === interactionNodeDetails[p][3])
+                        { //detect self-call - only add source node as parent
+                            if (lifelinenodesBBNIDs[q] === interactionNodeDetails[p][3])
+                            {
+                                interactionnodesBBN[p].addParent(lifelinenodesBBN[q]);
+                            }
                         }
-                        if (lifelinenodesBBNIDs[q] === interactionNodeDetails[p][4])
-                        {
-                            interactionnodesBBN[p].addParent(lifelinenodesBBN[q]);
+                        else {
+                            //add both incoming and outgoing node as parent
+                            if (lifelinenodesBBNIDs[q] === interactionNodeDetails[p][3])
+                            {
+                                interactionnodesBBN[p].addParent(lifelinenodesBBN[q]);
+                            }
+                            if (lifelinenodesBBNIDs[q] === interactionNodeDetails[p][4])
+                            {
+                                interactionnodesBBN[p].addParent(lifelinenodesBBN[q]);
+                            }
                         }
                     }
                     //console.log(interactionNodeDetails[p][5]);
                 }
             }
+
+
+            //determine failure dependencies between interactions
             for(m = 0; m < Object.keys(interactionNodeDetails).length; m++)
-            {
+            { //traverse list of interaction nodes
                 if (interactionNodeDetails[m][6] === 'sequence')
                 {
 
@@ -258,12 +429,14 @@
                     var currentsequence = interactionNodeDetails[m][2];
                     var minsequence = -1;
                     var parentInteractionNodeID = -1;
+                    var previousSequence = -1;
+                    var previousParentInteractionNodeID = -1;
 
                     for(n = 0; n <  Object.keys(interactionNodeDetails).length; n++)
-                    {
+                    { //again traverse list of interaction nodes, checking interactions with a lower sequence number than interaction m (in parent loop)
 
                         var sourcelifeline = interactionNodeDetails[m][3];
-                        //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                        //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                         if(sourcelifeline === interactionNodeDetails[n][4])
                         {
                             //store sequence of other incoming interactions on source lifeline on which current interaction M is dependent
@@ -279,29 +452,37 @@
                             DependentSourceLifelineOutgoing[n] = interactionNodeDetails[n][2];
                         }
 
-
                         //find the interaction with the highest sequence number that has
                         //the same lifeline-Target as the lifeline-source of this interaction
-                        //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                        //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                         if (interactionNodeDetails[n][2] < currentsequence &&
                             interactionNodeDetails[n][2] > minsequence &&
                             interactionNodeDetails[m][3] === interactionNodeDetails[n][4])
                         {
+                            //store new - highest interaction sequence on which node is dependent
                             minsequence = interactionNodeDetails[n][2];
                             parentInteractionNodeID = n;
                         }
+                        else if (interactionNodeDetails[n][2] < currentsequence &&
+                                interactionNodeDetails[n][2] > previousSequence &&
+                                interactionNodeDetails[m][3] === interactionNodeDetails[n][4])
+                            {
+                                //store next-highest values in case of dependency on optional interaction
+                                previousSequence = interactionNodeDetails[n][2];
+                                previousParentInteractionNodeID = n;
+                            }
                     }
 
                     if (minsequence !== -1 && parentInteractionNodeID !== -1 )
                     {
-                        console.log('current: ' + interactionNodeDetails[m][0]);
-                        console.log(interactionnodesBBN[m]);
+                        //console.log('current: ' + interactionNodeDetails[m][0]);
+                        //console.log(interactionnodesBBN[m]);
                         //console.log('currentsequence: ' + currentsequence);
                         //console.log('minseq: ' + minsequence );
                         //console.log('parent: ' + parentInteractionNodeID + "node: " + interactionNodeDetails[parentInteractionNodeID][0]);
                         //console.log(interactionnodesBBN);
                         //console.log(interactionnodesBBN[parentInteractionNodeID]);
-                        //0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type
+                        //interactionNodeDetails: 0 = name, 1= ID, 2= sequence, 3= lifeLineDependencySource, 4= lifeLineDependencyTarget, 5=noOfDependencies, 6=type, 7=sendEvent, 8=isOptional?, 9=parentOptFragmentnodesBBNID, 10=optparent
                         //if (minsequence !== 0 && parentInteractionNodeID !== 0 && m === 5)
 
                         //console.log('node ' + m);
@@ -309,7 +490,31 @@
                         //increase number of dependencies for this nodes
                         interactionNodeDetails[m][5]++;
                         //console.log(interactionnodesBBN[parentInteractionNodeID]);
+                        //console.log('$$$parent: ' + interactionNodeDetails[parentInteractionNodeID][0] + ' ---- dependencee: ' + interactionNodeDetails[m][0])
+                        //if (interactionnodesBBN[m][8] === 'opt')
+                        if (interactionNodeDetails[parentInteractionNodeID][8] === 'opt')
+                        {
+                            console.log('*** parent ' + interactionNodeDetails[m][0] + '####opt dependencee: ' + interactionNodeDetails[parentInteractionNodeID][0]);
+                            //interactionNodeDetails[parentInteractionNodeID][10] = 'optparent';
+                            interactionNodeDetails[m][10] = 'optparent';
 
+                            console.log(previousSequence + ' ' + previousParentInteractionNodeID)
+                            if (previousSequence !== -1 &&
+                                previousParentInteractionNodeID !== -1 &&
+                                interactionNodeDetails[m][8] !== 'opt')
+                            { //check if interaction is dependent on a previous interaction that is not optional
+                                //and check that this node is not optional itself
+                                //previousSequence;
+                                //previousParentInteractionNodeID;
+
+                                //console.log('test' + interactionNodeDetails[previousParentInteractionNodeID][0]);
+                                //add this previous non-optional interaction as a dependency.
+                                interactionnodesBBN[m].addParent(interactionnodesBBN[previousParentInteractionNodeID]);
+                                //increase number of dependencies for this nodes
+                                interactionNodeDetails[m][5]++;
+                            }
+
+                        }
                         //check for additional failure dependencies on incoming interactions
                         var lastOutgoingSequence = 0;
                         for(s = 0; s <  DependentSourceLifelineIncoming.length; s++)
@@ -329,9 +534,9 @@
                             }
                         }
                         //console.log(lastOutgoingSequence);
-                        console.log(DependentSourceLifelineIncoming);
-                        console.log(minsequence);
-                        console.log(lastOutgoingSequence);
+                        //console.log(DependentSourceLifelineIncoming);
+                        //console.log(minsequence);
+                        //console.log(lastOutgoingSequence);
                         for(r = 0; r <  DependentSourceLifelineIncoming.length; r++)
                         {
                             //Find interactions with sequence numbers that
@@ -347,6 +552,12 @@
                                 //increase number of dependencies for this nodes
                                 interactionNodeDetails[m][5]++;
                                 //console.log(interactionnodesBBN[parentInteractionNodeID]);
+                                //console.log('$$$' + interactionNodeDetails[r][0] + '####' + interactionNodeDetails[m][0])
+                                if (interactionNodeDetails[r][8] === 'opt')
+                                {
+                                    interactionNodeDetails[m][10] = 'optparent';
+                                    console.log('*** ' + interactionNodeDetails[m][0] + '####opt dependent on : ' + interactionNodeDetails[r][0]);
+                                }
                             }
                             //if there are no outgoing nodes (lastOutgoingSequence === 0)
                             //, and there is another incoming node,
@@ -358,6 +569,12 @@
                                 interactionnodesBBN[m].addParent(interactionnodesBBN[r]);
                                 //increase number of dependencies for this nodes
                                 interactionNodeDetails[m][5]++;
+                                //console.log('$$$' + interactionNodeDetails[r][0] + '####' + interactionNodeDetails[m][0])
+                                if (interactionNodeDetails[r][8] === 'opt')
+                                {
+                                    interactionNodeDetails[m][10] = 'optparent';
+                                    console.log('*** ' + interactionNodeDetails[m][0] + '####opt dependent on: ' + interactionNodeDetails[r][0]);
+                                }
                             }
                             //console.log('DependentSourceLifelineIncoming');
                             //console.log(DependentSourceLifelineIncoming);
@@ -374,97 +591,484 @@
                     DependentSourceLifelineIncoming.length = 0;
                     DependentSourceLifelineOutgoing.length = 0;
 
-                    //set CPT's of interactions - for each failure dependency the number of state combinations is multiplied by 2
-                    switch (interactionNodeDetails[m][5]) {
-                        case 0:
-                        interactionnodesBBN[m].setCpt([ 0.9, 0.1 ]);
-                        break;
-                        case 1:
-                        interactionnodesBBN[m].setCpt([
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ]
-                        ]);
-                        break;
-                        case 2:
-                        interactionnodesBBN[m].setCpt([
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ]
-                        ]);
-                        break;
-                        case 3:
-                        interactionnodesBBN[m].setCpt([
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ]
-                        ]);
-                        break;
-                        case 4:
-                        interactionnodesBBN[m].setCpt([
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ]
-                        ]);
-                        break;
-                        case 5:
-                        interactionnodesBBN[m].setCpt([
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ],
-                        [ 0.1, 0.9 ]
-                        ]);
-                        break;                        default:
-                        interactionnodesBBN[m].setCpt([
-                        [ 0.9, 0.1 ],
-                        [ 0.1, 0.9 ]
-                        ]);
+                    //console.log('=====' + interactionNodeDetails[m][0] + 'number or dependencies' + interactionNodeDetails[m][5]);
+                        console.log(interactionnodesBBN[m]);
+                    //CHECK - IS OPTIONAL? (not parent interaction of optional interaction)
+                    //if (interactionNodeDetails[m][8] === 'opt' && interactionNodeDetails[m][10] !== 'optparent')
+                    if (false)
+                    {//does not seem to be supported in jsbayes - only visual representation for now
+                        console.log('optional node: ' + interactionNodeDetails[m][0] + ', number of dependencies: ' + interactionNodeDetails[m][5]);
+                        //CHECK - IS OPTIONAL
+                        //if interaction is dependent on optional interaction node
+                        // nodes that have dep on optional node -> need extra CPT entries
+                        // add CPT state "does not occur"
+                        //set CPT's of interactions - for each failure dependency the number of state combinations is multiplied by 2
+                        switch (interactionNodeDetails[m][5]) {
+                            case 0:
+                                        //base values (without parents) - success, failure, does not occur
+                            interactionnodesBBN[m].setCpt([ 0.4, 0.3, 0.4 ]);
+                            break;
+                            case 1:
+                            //first parent is always fragment node
+                            interactionnodesBBN[m].setCpt([
+                            [  0.4, 0.3, 0.4 ], //parent 1 success
+                            [  0.3, 0.4, 0.4 ]  //parent 1 failure
+                            ]);
+                            break;
+                            case 2:
+                            interactionnodesBBN[m].setCpt([
+                                [  0.4, 0.3, 0.4 ], //parent 1 success, parent 2 success
+                                [  0.3, 0.4, 0.4 ],  //parent 1 failure, parent 2 success
+                                [  0.3, 0.4, 0.4 ], //parent 1 success, parent 2 failure
+                                [  0.3, 0.4, 0.4 ]  //parent 1 failure, parent 2 failure
+                            ]);
+                            break;
+                            case 3:
+                            interactionnodesBBN[m].setCpt([
+                                [  0.4, 0.3, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ]
+                            ]);
+                            break;
+                            case 4:
+                            interactionnodesBBN[m].setCpt([
+                                [  0.4, 0.3, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ]
+                            ]);
+                            break;
+                            case 5:
+                            interactionnodesBBN[m].setCpt([
+                                [  0.4, 0.3, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ],
+                                [  0.3, 0.4, 0.4 ]
+                            ]);
+                            break;
+                            default:
+                            interactionnodesBBN[m].setCpt([
+                                [  0.4, 0.3, 0.4 ], //parent 1 success
+                                [  0.3, 0.4, 0.4 ]  //parent 1 failure
+                            ]);
+                        }
+                    }
+                    //else if (interactionNodeDetails[m][8] === 'opt' && interactionNodeDetails[m][10] === 'optparent')
+                    else if (false)
+                    {//does not seem to be supported in jsbayes - only visual representation for now
+                        console.log('optional node + parent of optional node: ' + interactionNodeDetails[m][0] + ', number of dependencies: ' + interactionNodeDetails[m][5]);
+                        //node has parent that is optional - 1 extra state next to success and failure
+                        switch (interactionNodeDetails[m][5]) {
+                            case 0:
+                            //success, failure, does not occur
+                            interactionnodesBBN[m].setCpt([ 0.8, 0.1, 0.1 ]);
+                            break;
+                            case 1:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.8, 0.1, 0.1 ], //parent 1 success
+                            [ 0.1, 0.8, 0.1 ], //parent 1 failure
+                            [ 0.1, 0.1, 0.8 ] //parent 1 does not occur
+                            ]);
+                            break;
+                            case 2:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.8, 0.1, 0.1 ], //parent 1 success, parent 2 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 failure, parent 2 success
+                                [ 0.1, 0.1, 0.8 ], //parent 1 does not occur, parent 2 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 success, parent 2 failure
+                                [ 0.1, 0.8, 0.1 ], //parent 1 failure, parent 2 failure
+                                [ 0.1, 0.1, 0.8 ] //parent 1 does not occur, parent 2 failure
+                            ]);
+                            case 3:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.8, 0.1, 0.1 ], //parent 1 success, parent 2 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 failure, parent 2 success
+                                [ 0.1, 0.1, 0.8 ], //parent 1 does not occur, parent 2 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 success, parent 2 failure
+                                [ 0.1, 0.8, 0.1 ], //parent 1 failure, parent 2 failure
+                                [ 0.8, 0.1, 0.1 ], //parent 1 success, parent 2 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 failure, parent 2 success
+                                [ 0.1, 0.1, 0.8 ], //parent 1 does not occur, parent 2 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 success, parent 2 failure
+                                [ 0.1, 0.8, 0.1 ] //parent 1 failure, parent 2 failure
+                            ]);
+                            /*
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.9, 0.1],
+                                [ 0.01, 0.99  ],
+                                [ 0.99, 0.01 ],
+                                [ 0.9, 0.1],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.9, 0.1],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.9, 0.1],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ]
+                            ]);
+                            */
+                            break;
+                            case 4:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.8, 0.1, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ]
+                            ]);
+                            break;
+                            case 5:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.8, 0.1, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.8, 0.1 ],
+                                [ 0.1, 0.1, 0.8 ]
+                            ]);
+                            break;
+                             default:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.8, 0.1, 0.1 ], //parent 1 success
+                                [ 0.1, 0.8, 0.1 ], //parent 1 failure
+                                [ 0.1, 0.1, 0.8 ] //parent 1 does not occur
+                            ]);
+                        }
+                    }
+                    else if (interactionNodeDetails[m][10] === 'optparent')
+                    {
+                        console.log('parent of optional node: ' + interactionNodeDetails[m][0] + ', number of dependencies: ' + interactionNodeDetails[m][5]);
+                        //interactionNodeDetails[m][5];
+                        //node has parent that is optional - 1 extra state next to success and failure
+                        switch (interactionNodeDetails[m][5]) {
+                            case 0:
+                                                        //success, failure
+                            interactionnodesBBN[m].setCpt([ 0.99, 0.01 ]);
+                            break;
+                            case 1:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.99, 0.01 ], //parent 1 success
+                            [ 0.01, 0.99  ], //parent 1 failure
+                            [ 0.99, 0.01 ] //parent 1 does not occur
+                            ]);
+                            break;
+                            case 2:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.99, 0.01 ],  //parent 1 success, parent 2 succes
+                                [ 0.99, 0.01 ],  //parent 1 failure, parent 2 succes
+                                [ 0.99, 0.01 ],  //parent 1 does not occur, parent 2 succes
+                                [ 0.01, 0.99  ],  //parent 1 success, parent 2 failure
+                                [ 0.01, 0.99  ],  //parent 1 failure, parent 2 failure
+                                [ 0.01, 0.99  ]   //parent 1 does not occur, parent 2 failure
+                             ]);
+                            break;
+                            case 3:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.99, 0.01 ],
+                                [ 0.99, 0.01  ],
+                                [ 0.99, 0.01 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ]
+                            ]);
+                            break;
+                            case 4:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.99, 0.01 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.99, 0.01 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.1, 0.1 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.1, 0.1 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ]
+                            ]);
+                            break;
+                            case 5:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.99, 0.01 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.99, 0.01 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.1, 0.1 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.1, 0.1 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.1, 0.1 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.1, 0.1 ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ],
+                                [ 0.01, 0.99  ]
+                            ]);
+                            break;
+                             default:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.99, 0.01 ], //parent 1 success
+                                [ 0.01, 0.99  ], //parent 1 failure
+                                [ 0.99, 0.01 ] //parent 1 does not occur
+                            ]);
+                        }
+                    }
+                    else{
+                        console.log('interaction node: ' + interactionNodeDetails[m][0] + ', number of dependencies: ' + interactionNodeDetails[m][5])
+                        //set CPT's of interactions - for each failure dependency the number of state combinations is multiplied by 2
+                        switch (interactionNodeDetails[m][5]) {
+                            case 0:
+                                                            //success, failure
+                            interactionnodesBBN[m].setCpt([ 0.99, 0.01 ]);
+                            break;
+                            case 1:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.99, 0.01 ], //parent 1 success
+                            [ 0.01, 0.99  ] //parent 1 failure
+                            ]);
+                            break;
+                            case 2:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.9, 0.1], //parent 1 success, parent 2 success
+                            [ 0.01, 0.99  ],  //parent 1 success, parent 2 failure
+                            [ 0.01, 0.99 ],  //parent 1 failure, parent 2 success
+                            [ 0.01, 0.99 ]   //parent 1 failure, parent 2 failure
+                            ]);
+                            break;
+                            case 3:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ]
+                            ]);
+                            break;
+                            case 4:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ]
+                            ]);
+                            break;
+                            case 5:
+                            interactionnodesBBN[m].setCpt([
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.99, 0.01 ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ],
+                            [ 0.01, 0.99  ]
+                            ]);
+                            break;
+                            default:
+                            interactionnodesBBN[m].setCpt([
+                                [ 0.99, 0.01 ], //parent 1 success
+                                [ 0.01, 0.99  ] //parent 1 failure
+                            ]);
+                        }
                     }
                     //console.log(interactionnodesBBN[parentInteractionNodeID]);
                     //console.log(lifelinenodesBBN);
@@ -526,7 +1130,7 @@
               height: 1000,
               graph: graph,
               //samples: 10000
-              samples: 1000
+              samples: 10000
             });
             //samples: 15000
 
@@ -561,16 +1165,17 @@
 
     <div id="output">
       <h4>SD2BBN mapping output: </h4>
+      (values for states success and failure in BBN node CPTs are 0.9 and 0.1 for illustration purposes and need to be adapted, e.g., to 0.99 and 0.01, when modelling reliability of specific software)
     </div>
 
     <div id='svgcontainer'>
         <svg id="bbn">
         </svg>
     </div>
+    </center>
     <div id='xmloutput'>
     </div>
     <div id='BBN_text'>
     </div>
-    </center>
 </body>
 </html>
