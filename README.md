@@ -4,7 +4,7 @@
 
 The SD2BBN Tool maps interactions, components (in lifelines), and failure dependencies between them to a reliability network in a Bayesian Belief Network.
 
-The failure dependencies between certain sequences of interactions, especially in combined fragments with operators, are indeterministic due to the limited syntax of UML, and require inspection and possible.
+The failure dependencies between certain sequences of interactions, especially in combined fragments with operators, are indeterministic due to the limited syntax of UML, and require inspection and possible revisioning.
 
 SD2BBN is written in Javascript.
 
